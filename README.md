@@ -34,28 +34,29 @@ This will be the machine learning port of PianoMoodDetect, which will take audio
 7. Install required boardss through, Tools -> Boards -> Board Manager and search and install **Arduino Mbed OS Nano Boards** by Arduino
 8. Select the board with, Tools -> Boards -> **Arduino Mbed OS Nano Boards** -> Arduino Nano 33 BLE
 9. Select the correct port the Nano is connect to with, Tools -> Port -> [USB Port]
-10. If using **PDM.ino**, jump to Blluetooth instructions
+10. If using **PDM.ino**, jump to [Blluetooth Instructions](https://github.com/fieryraidenx/PianoMoodDetect#ble-instructions)
 11. Press the forward arrow **Upload** button on top left
 12. After done compiling (it can take upwards of 30 min the first compile), press magnifying glass **Serial Monitor** on the top right
 13. Results will be displayed on the Serial Monitor
 
 ### BLE Instructions
-10. Install the **ArduinoBLE library**, Sketch -> Include Library -> Manage Library -> Search and Install ArduinoBLE by Arduino
-11. Press the forward arrow **Upload** button on top left
-12. After done compiling (it can take upwards of 30 min the first compile), press magnifying glass **Serial Monitor** on the top right
-13. Results will be displayed on the Serial Monitor
-14. Open rNF Connect or LightBlue
-15. Select and Connect to PMDMonitor
-16. Select the Unknown Attribute typically at the very bottom with the UUID "19B10000-E8F2-537E-4F6C-D104768A1214"
-17. If on LightBlue, press Read / Read Again to retrieve value
-18. If on rNF Connect, press the download symbol on the very right side of the Unknown Attribute to retrieve value
-19. Compare value with key
+11. Install the **ArduinoBLE library**, Sketch -> Include Library -> Manage Library -> Search and Install ArduinoBLE by Arduino
+12. Press the forward arrow **Upload** button on top left
+13. After done compiling (it can take upwards of 30 min the first compile), press magnifying glass **Serial Monitor** on the top right
+14. Results will be displayed on the Serial Monitor
+15. Open rNF Connect or LightBlue
+16. Select and Connect to PMDMonitor
+17. Select the Unknown Attribute typically at the very bottom with the UUID "19B10000-E8F2-537E-4F6C-D104768A1214"
+18. If on LightBlue, press Read / Read Again to retrieve value
+19. If on rNF Connect, press the download symbol on the very right side of the Unknown Attribute to retrieve value
+20. Compare value with key
   - 00 : Error or Initial Value
   - 01 : Angry
   - 02 : Happy
   - 03 : Sad
   - 04 : Silence
-20. (OPTIONAL) disconnect the Nano from the computer and connect it to a powerbank, attach both of it to your arm to detect the data without connecting to a computer
+21. (OPTIONAL) disconnect the Nano from the computer and connect it to a powerbank, attach both of it to your arm to detect the data without connecting to a computer
+
 
 ## About Us
 This group project is made for Wearable Devices and Computer Vision Course (DGMD S-14) from Harvard Secondary School / Harvard Extension School in Summer 2021.
