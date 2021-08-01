@@ -67,8 +67,8 @@ Members: Alex Gianini (aeg224), Kaif Jeelani (fieryraidenx), Isaac Song (iiisong
 
 To contact us,
 
-Alex Gianini:
+Alex Gianini: alexanderegiannini@gmail.com
 
-Kaif Jeelani:
+Kaif Jeelani: kaif.ajeelani@gmail.com
 
 Isaac Song: isaacsong03@gmail.com
