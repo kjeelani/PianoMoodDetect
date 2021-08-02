@@ -32,17 +32,7 @@
 
 /* Includes ---------------------------------------------------------------- */
 #include <PDM.h>
-#include <pianoMD-nano_inferencing.h>
-
-/* Averaging */
-int sampleTime = 10000; // length of each sample in ms
-int angrySum = 0; // sum of angry % over sampleTime
-int happySum = 0; // sum of happy % over sampleTime
-int sadSum = 0; // sum of sad % over sampleTime
-int silenceSum = 0;
-
-long prevSampleTime = millis(); // timestamp of last sample
-
+#include <pianoMD-actual_inferencing.h>
 
 /** Audio buffers, pointers and selectors */
 typedef struct {
@@ -112,65 +102,10 @@ void loop()
         ei_printf("(DSP: %d ms., Classification: %d ms., Anomaly: %d ms.)",
             result.timing.dsp, result.timing.classification, result.timing.anomaly);
         ei_printf(": \n");
-
-        // temp store % for each mood
-        float angryTemp = result.classification[0].value;
-        float happyTemp = result.classification[1].value;
-        float sadTemp = result.classification[2].value;
-        float silenceTemp = result.classification[3].value;
-
         for (size_t ix = 0; ix < EI_CLASSIFIER_LABEL_COUNT; ix++) {
             ei_printf("    %s: %.5f\n", result.classification[ix].label,
                       result.classification[ix].value);
         }
-
-        if (max(max(angryTemp, happyTemp), max(sadTemp, silenceTemp)) == angryTemp) {angrySum++;}
-        else if (max(max(angryTemp, happyTemp), max(sadTemp, silenceTemp)) == happyTemp) {happySum++;}
-        else if (max(max(angryTemp, happyTemp), max(sadTemp, silenceTemp)) == sadTemp) {sadSum++;}
-        else if (max(max(angryTemp, happyTemp), max(sadTemp, silenceTemp)) == silenceTemp) {silenceSum++;}
-
-
-        // every approximate sampleTime interval return most common mood of time
-        if (millis() - prevSampleTime >= sampleTime) {
-          Serial.println();
-          Serial.println("Angry: " + String(angrySum));
-          Serial.println("Happy: " + String(happySum));
-          Serial.println("Sad: " + String(sadSum));
-          Serial.println("Silence: " + String(silenceSum));
-
-          int maxMood = max(max(silenceSum, angrySum), max(happySum, sadSum));
-          Serial.println(maxMood);
-
-          // if most common mood is angry
-          if (max(max(silenceSum, angrySum), max(happySum, sadSum)) == angrySum) {
-            Serial.println("---ANGRY---");
-          }
-
-          // if most common mood is happy
-          else if (max(max(silenceSum, angrySum), max(happySum, sadSum)) == happySum) {
-            Serial.println("---HAPPY---");
-          }
-
-          // if most common mood is sad
-          else if (max(max(silenceSum, angrySum), max(happySum, sadSum)) == sadSum) {
-            Serial.println("---SAD---");
-          }
-
-          // if most common mood is silence
-          else if (max(max(silenceSum, angrySum), max(happySum, sadSum)) == silenceSum) {
-            Serial.println("---SILENCE---");
-          }
-
-          // reset the variables
-          angrySum = 0;
-          happySum = 0;
-          sadSum = 0;
-          silenceSum = 0;
-
-          // update previousSampleTime
-          prevSampleTime = millis();
-        }
-
 #if EI_CLASSIFIER_HAS_ANOMALY == 1
         ei_printf("    anomaly score: %.3f\n", result.anomaly);
 #endif
