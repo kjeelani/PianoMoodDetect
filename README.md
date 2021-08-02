@@ -23,7 +23,7 @@ This will be the machine learning port of PianoMoodDetect, which will take audio
 
 ### How to Run
 1. Make sure all the required hardware and software are installed
-2. Donwload the [zip library](ei-pianomd-nano-arduino-1.0.5.zip)
+2. Download the [zip library](ei-pianomd-nano-arduino-1.0.5.zip)
 3. Choose which program/s to download
   - [PMD](PMD.ino) - bluetooth enabled, returns most occured mood over 10 sec period and raw mood data
   - [PMD_MostOccured_NoBluetooth](PMD_MostOccured_NoBluetooth.ino) - returns most occured mood over 10 sec period and raw mood data
