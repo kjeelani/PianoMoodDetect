@@ -1,4 +1,4 @@
-/* Edge Impulse Arduino examples - Modified by Isaac Song (iiisong)
+/* Edge Impulse Arduino examples - Modified Sections Added by Isaac Song (iiisong)
  * Copyright (c) 2021 EdgeImpulse Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,8 +33,9 @@
 /* Includes ---------------------------------------------------------------- */
 #include <PDM.h>
 #include <pianoMD-nano_inferencing.h>
-#include <ArduinoBLE.h>
 
+/* ADDED SECTION 1/5 START */
+#include <ArduinoBLE.h>
 
 /* Averaging */
 int sampleTime = 10000; // length of each sample in ms
@@ -58,6 +59,7 @@ BLEUnsignedCharCharacteristic moodCharacteristic("6be2e88a-f277-11eb-9a03-0242ac
     (0x)03 : Sad
     (0x)04 : Silence
     */
+/* ADDED SECTION 1/5 END */
   
 /** Audio buffers, pointers and selectors */
 typedef struct {
@@ -79,6 +81,7 @@ static int print_results = -(EI_CLASSIFIER_SLICES_PER_MODEL_WINDOW);
  */
 void setup()
 {
+/* ADDED SECTION 2/5 START */
     // put your setup code here, to run once:
     Serial.begin(115200);
     
@@ -104,6 +107,9 @@ void setup()
 
     // start advertising
     BLE.advertise();
+/* ADDED SECTION 2/5 END */
+
+  /* Code*/
 
     Serial.println("Edge Impulse Inferencing Demo");
 
@@ -127,6 +133,7 @@ void setup()
  */
 void loop()
 {
+/* ADDED SECTION 3/5 START */
     // wait for a BLE central
     BLEDevice central = BLE.central();
 
@@ -139,6 +146,8 @@ void loop()
         digitalWrite(LED_BUILTIN, HIGH);
 
         while (central.connected()) {
+/* ADDED SECTION 3/5 END */
+
             bool m = microphone_inference_record();
             if (!m) {
                 ei_printf("ERR: Failed to record audio...\n");
@@ -163,22 +172,25 @@ void loop()
                     result.timing.dsp, result.timing.classification, result.timing.anomaly);
                 ei_printf(": \n");
 
+                for (size_t ix = 0; ix < EI_CLASSIFIER_LABEL_COUNT; ix++) {
+                    ei_printf("    %s: %.5f\n", result.classification[ix].label,
+                              result.classification[ix].value);
+                }
+
+/* ADDED SECTION 4/5 START */
                 // temp store % for each mood
                 float angryTemp = result.classification[0].value;
                 float happyTemp = result.classification[1].value;
                 float sadTemp = result.classification[2].value;
                 float silenceTemp = result.classification[3].value;
 
-                for (size_t ix = 0; ix < EI_CLASSIFIER_LABEL_COUNT; ix++) {
-                    ei_printf("    %s: %.5f\n", result.classification[ix].label,
-                              result.classification[ix].value);
-                }
 
-                if (max(max(angryTemp, happyTemp), max(sadTemp, silenceTemp)) == angryTemp) {angrySum++;}
-                else if (max(max(angryTemp, happyTemp), max(sadTemp, silenceTemp)) == happyTemp) {happySum++;}
-                else if (max(max(angryTemp, happyTemp), max(sadTemp, silenceTemp)) == sadTemp) {sadSum++;}
-                else if (max(max(angryTemp, happyTemp), max(sadTemp, silenceTemp)) == silenceTemp) {silenceSum++;}
-
+                // maximum of temporary variable
+                int maxTemp = max(max(angryTemp, happyTemp), max(sadTemp, silenceTemp));
+                if (maxTemp == angryTemp) {angrySum++;}
+                else if (maxTemp == happyTemp) {happySum++;}
+                else if (maxTemp == sadTemp) {sadSum++;}
+                else if (maxTemp == silenceTemp) {silenceSum++;}
 
                 // every approximate sampleTime interval return most common mood of time
                 if (millis() - prevSampleTime >= sampleTime) {
@@ -188,8 +200,9 @@ void loop()
                   Serial.println("Sad: " + String(sadSum));
                   Serial.println("Silence: " + String(silenceSum));
 
+                  // most occuring mood
                   int maxMood = max(max(silenceSum, angrySum), max(happySum, sadSum));
-                  Serial.println(maxMood);
+                  Serial.println("Max Mood Sum: " + String(maxMood));
 
                   // if most common mood is angry
                   if (maxMood == angrySum) {
@@ -224,6 +237,7 @@ void loop()
                   // update previousSampleTime
                   prevSampleTime = millis();
                 }
+/* ADDED SECTION 4/5 END */
 
     #if EI_CLASSIFIER_HAS_ANOMALY == 1
             ei_printf("    anomaly score: %.3f\n", result.anomaly);
@@ -233,11 +247,13 @@ void loop()
             }
         }
 
+/* ADDED SECTION 5/5 START */
         // when the central disconnects, turn off the LED:
         digitalWrite(LED_BUILTIN, LOW);
         Serial.print("Disconnected from central: ");
         Serial.println(central.address());
     }
+/* ADDED SECTION 5/5 END */
 }
 
 /**
