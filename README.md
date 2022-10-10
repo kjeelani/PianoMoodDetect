@@ -3,7 +3,7 @@ This will be the machine learning port of PianoMoodDetect, which will take audio
 
 
 Link to the Video: [PMD Video Demo](https://drive.google.com/file/d/1uX5su_4KtaUus0jB1XEI6SNKJ-fODRyG/view?usp=sharing).
-Link to the Slides:[Powerpoint Slides](https://docs.google.com/presentation/d/1A6edBlZyydkND7f5juQiJ3jpEm0fiCRRPGEFvX3eTmQ/edit?usp=sharing).
+Link to the Slides: [Powerpoint Slides](https://docs.google.com/presentation/d/1A6edBlZyydkND7f5juQiJ3jpEm0fiCRRPGEFvX3eTmQ/edit?usp=sharing).
 
 ## Instructions
 ### Required Hardware
